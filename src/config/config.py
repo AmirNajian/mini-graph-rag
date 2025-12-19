@@ -2,7 +2,6 @@
 Configuration management for Mini GraphRAG.
 """
 import os
-from typing import Dict, Any
 from pathlib import Path
 import yaml
 from pydantic import BaseModel
