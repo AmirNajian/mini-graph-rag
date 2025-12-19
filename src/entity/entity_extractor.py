@@ -2,8 +2,7 @@
 Entity extraction from text using heuristic methods.
 """
 import re
-from typing import List, Dict, Optional
-from dataclasses import dataclass
+from typing import List
 
 try:
     import spacy  # type: ignore
@@ -13,14 +12,7 @@ except ImportError:
     SPACY_AVAILABLE = False
 
 
-@dataclass
-class Entity:
-    """Represents an extracted entity."""
-    text: str
-    start_char: int
-    end_char: int
-    confidence: float
-    entity_type: str = "UNKNOWN"
+from schema.entity import Entity
 
 
 class EntityExtractor:
