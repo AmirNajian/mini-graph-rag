@@ -2,16 +2,10 @@
 Entity resolution and normalization.
 """
 from typing import Dict, List, Set, Optional
-from dataclasses import dataclass
 from collections import defaultdict
 
+from schema.entity import EntityVariant
 
-@dataclass
-class EntityVariant:
-    """Represents a variant of an entity."""
-    text: str
-    canonical_id: str
-    confidence: float
 
 
 class EntityResolver:
