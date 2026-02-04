@@ -10,17 +10,7 @@ from entity_extractor import EntityExtractor
 from entity_resolver import EntityResolver
 from text_indexer import TextIndexer
 from knowledge_graph import KnowledgeGraph
-
-
-@dataclass
-class RetrievalResult:
-    """Result of a retrieval operation."""
-    doc_id: str
-    score: float
-    lexical_score: float
-    graph_score: float
-    matched_entities: List[str]
-
+from schema.retrieval import RetrievalResult
 
 class Retriever:
     """Hybrid retriever combining TF-IDF and graph-based retrieval."""

@@ -54,13 +54,6 @@ if not GRAPHRAG_AVAILABLE:
     pass  # Will use NetworkX as primary storage
 
 
-@dataclass
-class Relation:
-    """Represents a relation between entities."""
-    source_id: str
-    target_id: str
-    weight: float
-    edge_type: str = "cooccurrence"
 
 
 class KnowledgeGraph:
