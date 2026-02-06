@@ -4,9 +4,6 @@ Data models for Mini GraphRAG API.
 from typing import List
 from pydantic import BaseModel
 
-from .entity import Entity
-from .graph import Graph
-from .retrieval import RetrievalResult
 
 class DocumentInput(BaseModel):
     """Input document model."""

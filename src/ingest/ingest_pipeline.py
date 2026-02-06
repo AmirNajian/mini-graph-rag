@@ -2,12 +2,11 @@
 Document ingestion pipeline.
 """
 from typing import List, Dict
-from collections import defaultdict
 
-from entity_extractor import EntityExtractor
-from entity_resolver import EntityResolver
-from knowledge_graph import KnowledgeGraph
-from text_indexer import TextIndexer
+from src.entity.entity_extractor import EntityExtractor
+from src.entity.entity_resolver import EntityResolver
+from src.graph.knowledge_graph import KnowledgeGraph
+from src.retrieval.text_indexer import TextIndexer
 
 
 class IngestPipeline:
