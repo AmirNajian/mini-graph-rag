@@ -2,14 +2,13 @@
 Hybrid retrieval combining lexical and graph-based methods.
 """
 from typing import List, Dict, Optional
-from dataclasses import dataclass
 
 from typing import Optional as TypingOptional
 
-from entity_extractor import EntityExtractor
-from entity_resolver import EntityResolver
-from text_indexer import TextIndexer
-from knowledge_graph import KnowledgeGraph
+from entity.entity_extractor import EntityExtractor
+from entity.entity_resolver import EntityResolver
+from graph.knowledge_graph import KnowledgeGraph
+from retrieval.text_indexer import TextIndexer
 from schema.retrieval import RetrievalResult
 
 class Retriever:

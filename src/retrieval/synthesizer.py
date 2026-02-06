@@ -4,9 +4,9 @@ Answer synthesis and citation extraction.
 from typing import List, Dict, Any
 import re
 
-from retriever import RetrievalResult
-from knowledge_graph import KnowledgeGraph
-from text_indexer import TextIndexer
+from graph.knowledge_graph import KnowledgeGraph
+from retrieval.text_indexer import TextIndexer
+from schema.retrieval import RetrievalResult
 
 
 class Synthesizer:
