@@ -5,11 +5,11 @@ from typing import Dict, List, Optional
 from fastapi import FastAPI, HTTPException
 from pydantic import BaseModel
 
-from config import Config
-from ingest_pipeline import IngestPipeline
-from retriever import Retriever
-from schema import DocumentInput, IngestRequest, IngestResponse, AnswerRequest, AnswerResponse, Citation, GraphTrace
-from synthesizer import Synthesizer
+from src.config.config import Config, get_config
+from src.ingest.ingest_pipeline import IngestPipeline
+from src.retrieval.retriever import Retriever
+from src.schema.api import IngestRequest, IngestResponse, AnswerRequest, AnswerResponse, Citation, GraphTrace
+from src.retrieval.synthesizer import Synthesizer
 
 app = FastAPI(title="Mini GraphRAG", version="0.1.0")
 
