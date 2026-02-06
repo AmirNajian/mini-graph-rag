@@ -1,0 +1,34 @@
+# Run Mini GraphRAG in containers.
+# Build and run on Linux so the lancedb dependency (pulled in by graphrag) installs
+# via manylinux wheels, avoiding the macOS x86_64 wheel error.
+
+services:
+  app:
+    build:
+      context: ../..
+      dockerfile: src/docker/Dockerfile
+    ports:
+      - "8000:8000"
+    environment:
+      - PYTHONPATH=/app/src
+    volumes:
+      # Optional: persist any future LanceDB/GraphRAG data
+      - lancedb-data:/app/data
+    healthcheck:
+      test: ["CMD", ".venv/bin/python", "-c", "import urllib.request; urllib.request.urlopen('http://localhost:8000/health')"]
+      interval: 10s
+      timeout: 5s
+      retries: 3
+      start_period: 5s
+
+  # LanceDB is used as an embedded library by graphrag (no separate server).
+  # This service holds a shared volume for optional persistence; the app can
+  # mount the same volume if you add LanceDB/GraphRAG data directory config.
+  lancedb:
+    image: alpine:3.19
+    command: ["sleep", "infinity"]
+    volumes:
+      - lancedb-data:/data
+
+volumes:
+  lancedb-data:
