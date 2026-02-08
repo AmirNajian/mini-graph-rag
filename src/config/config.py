@@ -77,3 +77,7 @@ class Config(BaseModel):
             return cls.from_yaml(config_path)
         return cls.from_env()
 
+
+def get_config() -> Config:
+    """Get the configuration."""
+    return Config.default()

@@ -4,7 +4,7 @@ Entity resolution and normalization.
 from typing import Dict, List, Set, Optional
 from collections import defaultdict
 
-from schema.entity import EntityVariant
+from src.schema.entity import EntityVariant
 
 
 

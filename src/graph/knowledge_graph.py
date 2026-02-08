@@ -24,7 +24,6 @@ To use GraphRAG features:
 """
 from typing import Dict, List, Set, Optional
 import networkx as nx
-from dataclasses import dataclass
 from pathlib import Path
 import os
 

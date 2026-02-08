@@ -1,10 +1,12 @@
 """
 Example usage of Mini GraphRAG service.
 """
-from config import Config
-from ingest_pipeline import IngestPipeline
-from retriever import Retriever
-from synthesizer import Synthesizer
+from src.config import get_config
+from src.ingest.ingest_pipeline import IngestPipeline
+from src.retrieval.retriever import Retriever
+from src.retrieval.synthesizer import Synthesizer
+
+config = get_config()
 
 # Sample documents
 documents = [
@@ -29,7 +31,6 @@ documents = [
 def main():
     """Run example."""
     # Initialize
-    config = Config.default()
     pipeline = IngestPipeline(config)
     retriever = Retriever(config)
     synthesizer = Synthesizer(config)
