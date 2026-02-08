@@ -1,11 +1,9 @@
 """
 FastAPI application for Mini GraphRAG service.
 """
-from typing import Dict, List, Optional
 from fastapi import FastAPI, HTTPException
-from pydantic import BaseModel
 
-from src.config.config import Config, get_config
+from src.config.config import Config
 from src.ingest.ingest_pipeline import IngestPipeline
 from src.retrieval.retriever import Retriever
 from src.schema.api import IngestRequest, IngestResponse, AnswerRequest, AnswerResponse, Citation, GraphTrace
@@ -13,23 +11,12 @@ from src.retrieval.synthesizer import Synthesizer
 
 app = FastAPI(title="Mini GraphRAG", version="0.1.0")
 
-# Global state
-config: Optional[Config] = None
-ingest_pipeline: Optional[IngestPipeline] = None
-retriever: Optional[Retriever] = None
-synthesizer: Optional[Synthesizer] = None
-
-
-
-@app.on_event("startup")
-async def startup_event():
-    """Initialize global state on startup."""
-    global config, ingest_pipeline, retriever, synthesizer
-    
-    config = Config()
-    ingest_pipeline = IngestPipeline(config)
-    retriever = Retriever(config)
-    synthesizer = Synthesizer(config)
+# Global state — initialized at import so they're never None when handling requests
+_config = Config()
+config: Config = _config
+ingest_pipeline: IngestPipeline = IngestPipeline(_config)
+retriever: Retriever = Retriever(_config)
+synthesizer: Synthesizer = Synthesizer(_config)
 
 
 @app.get("/health")
@@ -49,19 +36,14 @@ async def ingest_documents(request: IngestRequest):
     Returns:
         IngestResponse with statistics
     """
-    if ingest_pipeline is None:
-        raise HTTPException(status_code=500, detail="Pipeline not initialized")
-    
     documents = [{"id": doc.id, "text": doc.text} for doc in request.documents]
     stats = ingest_pipeline.run(documents)
-    
-    # Update retriever with new index
-    if retriever is not None:
-        retriever.update_index(
-            ingest_pipeline.text_indexer,
-            ingest_pipeline.knowledge_graph,
-            ingest_pipeline.entity_resolver,
-        )
+
+    retriever.update_index(
+        ingest_pipeline.text_indexer,
+        ingest_pipeline.knowledge_graph,
+        ingest_pipeline.entity_resolver,
+    )
     
     return IngestResponse(
         status="success",
@@ -84,10 +66,8 @@ async def answer_query(request: AnswerRequest):
     Returns:
         AnswerResponse with answer, citations, and graph trace
     """
-    if retriever is None or synthesizer is None:
-        raise HTTPException(status_code=500, detail="Service not initialized")
-    
-    if ingest_pipeline is None or ingest_pipeline.knowledge_graph is None:
+    # Retriever is only populated after /ingest calls update_index()
+    if retriever.text_indexer is None or retriever.knowledge_graph is None:
         raise HTTPException(
             status_code=400, detail="No documents ingested. Call /ingest first."
         )
@@ -100,6 +80,7 @@ async def answer_query(request: AnswerRequest):
         retrieval_results,
         request.query,
         ingest_pipeline.knowledge_graph,
+        ingest_pipeline.text_indexer,
     )
     
     return AnswerResponse(
