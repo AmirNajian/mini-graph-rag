@@ -4,9 +4,9 @@ Answer synthesis and citation extraction.
 from typing import List, Dict, Any
 import re
 
-from graph.knowledge_graph import KnowledgeGraph
-from retrieval.text_indexer import TextIndexer
-from schema.retrieval import RetrievalResult
+from src.graph.knowledge_graph import KnowledgeGraph
+from src.retrieval.text_indexer import TextIndexer
+from src.schema.retrieval import RetrievalResult
 
 
 class Synthesizer:
@@ -193,7 +193,7 @@ class Synthesizer:
         Returns:
             Graph trace dictionary
         """
-        from entity_extractor import EntityExtractor
+        from src.entity.entity_extractor import EntityExtractor
         
         entity_extractor = EntityExtractor(self.config)
         query_entities = [e.text for e in entity_extractor.extract_entities(query)]
@@ -232,7 +232,7 @@ class Synthesizer:
         self, query: str, knowledge_graph: KnowledgeGraph
     ) -> Dict[str, Any]:
         """Generate response when no results found."""
-        from entity_extractor import EntityExtractor
+        from src.entity.entity_extractor import EntityExtractor
         
         entity_extractor = EntityExtractor(self.config)
         query_entities = [e.text for e in entity_extractor.extract_entities(query)]

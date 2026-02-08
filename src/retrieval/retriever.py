@@ -5,11 +5,11 @@ from typing import List, Dict, Optional
 
 from typing import Optional as TypingOptional
 
-from entity.entity_extractor import EntityExtractor
-from entity.entity_resolver import EntityResolver
-from graph.knowledge_graph import KnowledgeGraph
-from retrieval.text_indexer import TextIndexer
-from schema.retrieval import RetrievalResult
+from src.entity.entity_extractor import EntityExtractor
+from src.entity.entity_resolver import EntityResolver
+from src.graph.knowledge_graph import KnowledgeGraph
+from src.retrieval.text_indexer import TextIndexer
+from src.schema.retrieval import RetrievalResult
 
 class Retriever:
     """Hybrid retriever combining TF-IDF and graph-based retrieval."""

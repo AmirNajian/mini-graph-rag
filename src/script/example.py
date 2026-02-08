@@ -2,9 +2,9 @@
 Example usage of Mini GraphRAG service.
 """
 from src.config import get_config
-from ingest.ingest_pipeline import IngestPipeline
-from retrieval.retriever import Retriever
-from retrieval.synthesizer import Synthesizer
+from src.ingest.ingest_pipeline import IngestPipeline
+from src.retrieval.retriever import Retriever
+from src.retrieval.synthesizer import Synthesizer
 
 config = get_config()
 

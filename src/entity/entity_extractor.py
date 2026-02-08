@@ -12,7 +12,7 @@ except ImportError:
     SPACY_AVAILABLE = False
 
 
-from schema.entity import Entity
+from src.schema.entity import Entity
 
 
 class EntityExtractor:
