@@ -112,6 +112,22 @@ Configuration can be provided via:
 
 See `config.py` for available configuration options.
 
+## Docker deployment
+
+Run the service in containers (recommended if `lancedb` fails to install on your platform, e.g. macOS x86_64):
+
+```bash
+# From repo root
+docker compose -f src/docker/docker-compose.yaml up --build
+```
+
+Graph and LanceDB data are persisted to a **local directory** on your machine:
+
+- Data is stored in `./data` at the repo root (bind-mounted into the containers).
+- It survives restarts and is visible on the host; `data/` is in `.gitignore`.
+
+See [src/docker/README.md](src/docker/README.md) for details, optional commands, and service descriptions.
+
 ## Development
 
 Run tests:
