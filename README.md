@@ -31,7 +31,7 @@ python -m spacy download en_core_web_sm
 ### Start the API server
 
 ```bash
-uvicorn main:app --reload
+uv run uvicorn src.api.main:app --reload
 ```
 
 The API will be available at `http://localhost:8000`.
@@ -40,7 +40,11 @@ The API will be available at `http://localhost:8000`.
 
 #### `POST /ingest`
 
-Ingest documents into the knowledge graph.
+Ingest documents into the knowledge graph and update the in-memory index.
+On each call, the service also:
+
+- Saves a serialized snapshot of the current state to `DATA_DIR/state.pkl`
+- Exports the knowledge graph to GraphRAG-compatible JSONL files in `DATA_DIR/graph/`
 
 ```json
 {
@@ -67,6 +71,33 @@ Answer a query using the knowledge graph.
 #### `GET /health`
 
 Health check endpoint.
+
+#### `POST /graph/export`
+
+Export the current knowledge graph to GraphRAG-compatible JSONL files. By default,
+the data is written to the `graph/` subdirectory under `DATA_DIR` (see below).
+
+#### `POST /state/save`
+
+Persist the current in-memory state (configuration, ingest pipeline, retriever) to
+`DATA_DIR/state.pkl`. This is a simple, local-only snapshot used to restore state
+after a restart.
+
+#### `POST /state/load`
+
+Load previously saved state from `DATA_DIR/state.pkl` and restore the configuration,
+ingest pipeline, and retriever. This allows the service to resume answering queries
+without re-ingesting all documents.
+
+### Persistence and `DATA_DIR`
+
+The service uses a base data directory (by default `data/` in the project root)
+for:
+
+- `state.pkl`: Pickled snapshot of the graph/index state
+- `graph/`: GraphRAG-compatible JSONL export of the knowledge graph
+
+You can override the location via the `DATA_DIR` environment variable.
 
 ### Python API
 
@@ -111,6 +142,22 @@ Configuration can be provided via:
 3. Default values
 
 See `config.py` for available configuration options.
+
+## Docker deployment
+
+Run the service in containers (recommended if `lancedb` fails to install on your platform, e.g. macOS x86_64):
+
+```bash
+# From repo root
+docker compose -f src/docker/docker-compose.yaml up --build
+```
+
+Graph and LanceDB data are persisted to a **local directory** on your machine:
+
+- Data is stored in `./data` at the repo root (bind-mounted into the containers).
+- It survives restarts and is visible on the host; `data/` is in `.gitignore`.
+
+See [src/docker/README.md](src/docker/README.md) for details, optional commands, and service descriptions.
 
 ## Development
 
