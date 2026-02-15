@@ -1,27 +1,13 @@
 """
 Utilities for turning web pages into `/ingest`-ready documents.
 
-The core idea is:
+The core functionalities includes:
 
 - Fetch HTML from one or more URLs.
 - Strip HTML tags (ignoring scripts/styles).
 - Normalize whitespace into readable paragraphs.
 - Return a list of ``{"id": ..., "text": ...}`` dictionaries that matches
   what `/ingest` in ``src/api/main.py`` expects.
-
-Example:
-
-    from src.parser.web_page_parser import build_documents_from_urls
-    from src.script.persist_workflow import post_json
-
-    BASE_URL = "http://localhost:8000"
-    urls = ["https://www.ecfr.gov/current/title-40"]
-
-    documents = build_documents_from_urls(urls)
-    payload = {"documents": documents}
-    resp = post_json(f"{BASE_URL}/ingest", payload)
-    print(resp)
-
 """
 
 from __future__ import annotations
