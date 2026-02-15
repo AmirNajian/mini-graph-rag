@@ -9,7 +9,6 @@ Currently includes:
 """
 
 from .web_page_parser import (  # noqa: F401
-    WebPageDocument,
     build_document_from_url,
     build_documents_from_html_snippets,
     build_documents_from_urls,
@@ -20,7 +19,6 @@ from .web_page_parser import (  # noqa: F401
 )
 
 __all__ = [
-    "WebPageDocument",
     "build_document_from_url",
     "build_documents_from_html_snippets",
     "build_documents_from_urls",
